@@ -1,0 +1,89 @@
+﻿SC1015: Course Information Introduction to Data Science and Artificial Intelligence
+
+Course Instructors:
+- Associate Prof Bo AN
+  - Email: boan@ntu.edu.sg
+  - Office: N4-02b-55
+- Dr Sourav SEN GUPTA (Co-Ord)
+  - Email: sg.sourav@ntu.edu.sg
+  - Office: N4-02b-45
+
+Lab Instructors:
+- Graduate Teaching Assistants
+- Note: Email of your Lab's TA will be provided separately
+
+Lab Exercises:
+- Lab exercises will be conducted in coordination with the course coordinator.
+- Details will be posted in the timetable.
+
+General Information:
+Description:
+In today's era of information, 'Data' is the new driving force, provided we know how to extract relevant 'Intelligence'. This course will start with the core principles of Data Science and will equip you with the basic tools and techniques of data handling, exploratory data analysis, data visualization, data-based inference, and data-focused communication. The course will also introduce you to the fundamentals of Artificial Intelligence, including state space, search problems, computer vision, and natural language processing. It will motivate you to work closely with data and make data-driven decisions in your field of study. Ethical issues in Data Science and Artificial Intelligence will also be discussed, along with cutting-edge applications related to Big Data, Neural Networks, and Deep Learning. Python will be the language of choice to introduce hands-on computational techniques.
+
+Outcome:
+By the end of this course, you should be able to:
+- Identify and define data-oriented problems and data-driven decisions in real life.
+- Discuss and illustrate problems in terms of data exploration and visualization.
+- Apply basic machine learning tools to extract inferential information from the data.
+- Compose an engaging "data-story" to communicate the problem and the inference.
+- Outline the roles and requirements of artificial intelligence in practical applications.
+- Apply basic artificial intelligence techniques in search problems and game playing.
+- Discuss and explain concepts of computer vision and natural language processing.
+
+Course Material:
+There is no single textbook for the course. The following books and resources will be used as references:
+1. Python Data Science Handbook: Jake VanderPlas: O'Reilly (1st edition)
+2. An Introduction to Statistical Learning: James, Witten, Hastie, Tibshirani
+3. Artificial Intelligence: A Modern Approach: Russell and Norvig (3rd edition)
+Additional resources, if required, will be shared with you in the LAMS videos, face-to-face lectures, and example classes. Almost all of these resources will either be online (free and open source) books or online (freely available) videos/codes.
+
+Course Structure:
+Instruction:
+- 13 Online LAMS Lectures: 1 to 2 hours of Videos on NTU Learn + Quizzes (Weeks 01 to 13)
+- 6 Review Lectures on DS: 1 hour of face-to-face Review Lecture (online) (Weeks 01 to 07)
+- 3 Review Lectures on AI: 1 hour of face-to-face Review Lecture (online) (Weeks 09 to 12)
+
+Interaction:
+- 10 Physical Lab Sessions: 2 hours of Hands-on Exercises and Discussions (Weeks 01 to 12)
+- 2 Project Consultations: Group-wise consultation time on appointment (Weeks 10 to 13)
+
+Check the Course Calendar for a detailed schedule of the semester. Check the Weekly Timetable for your Lab timings.
+
+Course Evaluation:
+- Quizzes within LAMS: 5% (Based on objective questions embedded within LAMS sequences)
+- Theory Quizzes: 40% (2 theory quizzes will be held after Weeks 7 and 13, respectively)
+- Lab Exercises: 25% (5 lab sessions will have submittable exercise problems to solve)
+- Mini-Project: 30% (8-week Group Project to be completed during Weeks 6 to 13)
+
+The project group should consist of 3 members.
+This is a 100% Continuous Assessment (CA) course, with NO Final Examination. Graded components of the CA will be spaced out throughout the semester. You will complete all assessed components by Week 14, after the classes end.
+
+Course Content:
+The course is divided into modules:
+
+Module 01: Data-Analytic Thinking and the Data Pipeline (1 Week)
+- Basic Data Handling in Python
+
+Module 02: Basic Statistics and Exploratory Data Analysis (2 Weeks)
+- Statistics and EDA in Python
+
+Module 03: Data-driven Prediction - Fitting a Linear Model (1.5 Weeks)
+- Linear Regression in Python
+
+Module 04: Data-driven Classification - Using a Decision Tree (1.5 Weeks)
+- Classification Trees in Python
+
+Module 05: Digital Storytelling - Visualization and Dashboards (1 Week)
+- Data Dashboards in Python
+
+Module 06: Artificial Intelligence - Current State-of-the-Art (1 Week)
+- No Lab Session for this Module
+
+Module 07: Intelligent Agents and Search Space Solutions (2 Weeks)
+- Uninformed and Informed Search
+
+Module 08: Constraint Satisfaction and Game Playing (1 Week)
+- Game with Constrained Search
+
+Module 09: e-Learning Miscellaneous topics in Artificial Intelligence (No Lab Session)
+- Miscellaneous topics in AI may include a basic introduction to cutting-edge practical domains like Computer Vision, Natural Language Processing, Reinforcement Learning, as well as Ethics in the context of Data Science and AI.
