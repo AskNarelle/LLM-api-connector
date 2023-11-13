@@ -16,6 +16,6 @@ Run the server using `server.py`
 
 ## API Endpoints
 
-`/getAns`: Endpoint for generating reply using GPT API
-**Method**: POST
+`/getAns`: Endpoint for generating reply using GPT API  
+**Method**: POST  
 **Request Body Format**: `{"userInput":"Your prompt here"}`
