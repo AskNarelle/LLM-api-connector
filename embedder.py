@@ -24,3 +24,7 @@ def textEmbedder():
     
 if __name__ == "__main__":
     textEmbedder()
+
+
+
+

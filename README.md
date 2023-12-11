@@ -1,4 +1,4 @@
-# AskNarelle-Backend
+# AskNarelle LLM-api-connector
 
 This repository contains the code for a backend Flask server designed as a RESTful API, connecting to the GPT API using the LangChain framework.
 

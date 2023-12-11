@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
 from langchain.document_loaders import TextLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -11,6 +12,7 @@ from langchain.chains import RetrievalQA
 load_dotenv(find_dotenv("./config/.env"))
 
 app = Flask(__name__)
+CORS(app)
 
 vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=OpenAIEmbeddings())
 
@@ -35,8 +37,16 @@ qa = RetrievalQA.from_chain_type(llm,
                                 chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
 
 
-@app.route('/getAns', methods=['POST'])
+@app.route('/getAns', methods=['POST', 'OPTIONS'])
 def getAnswer():
+    if request.method == 'OPTIONS':
+        # Respond to preflight request
+        response = jsonify({'status': 'success'})
+        response.headers['Access-Control-Allow-Origin'] = '*'  # Adjust as needed
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        response.headers['Access-Control-Allow-Methods'] = 'POST'
+        return response
+    
     try: 
         data = request.get_json()
         prompt = data.get("userInput","") # Default set the input to blank
