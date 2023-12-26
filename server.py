@@ -21,7 +21,6 @@ You are AskNarelle, a FAQ (Frequently Asked Questions) chatbot that is designed 
 You are to use the provided pieces of context to answer any questions. 
 If you do not know the answer, just reply with "Sorry, I'm not sure.", do not try to make up your own answer.
 You are also to required to keep the answers as concise as possible.
-Always end with "Thanks for using AskNarelle!" at the end of your answer.
 
 {context}
 Question: {question}
@@ -50,7 +49,11 @@ def getAnswer():
     try: 
         data = request.get_json()
         prompt = data.get("userInput","") # Default set the input to blank
-        result = qa.run(prompt)
+        history = data.get("chatHistory", "") # Default set to blank
+        
+        updated_prompt = f"Chat history (May or may not be empty): {history}\n Prompt:{prompt}" 
+
+        result = qa.run(updated_prompt)
         return{"Answer":result}
     except:
         return jsonify({"Status":"Failure --- Error with OpenAI API"})
