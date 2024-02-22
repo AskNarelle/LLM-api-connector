@@ -30,7 +30,7 @@ vectorstore = AzureCosmosDBVectorSearch.from_connection_string(
 template = """ 
 You are AskNarelle, a FAQ (Frequently Asked Questions) chatbot that is designed to answer course-related queries by undergraduate students.
 You are to use the provided piece(s) of context to answer any question. 
-If you do not know the answer, just reply with "Sorry, I'm not sure.", do not try to make up your own answer.
+If you do not know the answer or there is no context provided, just reply with "Sorry, I'm not sure.", do not try to make up your own answer.
 You are also to required to keep the answers as concise as possible, but do not leave out any important details.
 
 Context: {context}
@@ -62,12 +62,19 @@ def getAnswer():
         prompt = data.get("userInput","") # Default set the input to blank
         history = data.get("chatHistory", "") # Default set to blank
 
+        # if len(history) >= 4:
+        #     history[:] = history[-4:]
+
         docs = vectorstore.similarity_search(prompt)
-        #print(docs[0].page_content)
+
+        if docs == []:
+            vector_result = "Not sure of the answer"
+        else:
+            vector_result = docs[0].page_content
 
         reply = chat(
             chat_prompt.format_prompt(
-                context=docs[0].page_content, history=history, text=prompt
+                context=vector_result, history=history, text=prompt
             ).to_messages()
         )
 
