@@ -62,8 +62,8 @@ def getAnswer():
         prompt = data.get("userInput","") # Default set the input to blank
         history = data.get("chatHistory", "") # Default set to blank
 
-        # if len(history) >= 4:
-        #     history[:] = history[-4:]
+        if len(history) >= 4:
+            history[:] = history[-4:]
 
         docs = vectorstore.similarity_search(prompt)
 
