@@ -1,40 +1,51 @@
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
-from langchain.document_loaders import TextLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import Chroma
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.prompts import PromptTemplate
-from langchain.chat_models import ChatOpenAI
-from langchain.chains import RetrievalQA
+from langchain_openai import OpenAIEmbeddings
+from langchain_community.vectorstores.azure_cosmos_db import (
+    AzureCosmosDBVectorSearch,
+    CosmosDBSimilarityType,
+)
+from langchain.prompts.chat import (
+    ChatPromptTemplate,
+    HumanMessagePromptTemplate,
+    SystemMessagePromptTemplate,
+)
+from langchain_openai import ChatOpenAI
 
 load_dotenv(find_dotenv("./config/.env"))
 
 app = Flask(__name__)
 CORS(app)
 
-vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=OpenAIEmbeddings())
+CONNECTION_STRING = os.getenv("MONGO_URI")
+NAMESPACE = "testdb.testcollection"
+vectorstore = AzureCosmosDBVectorSearch.from_connection_string(
+    CONNECTION_STRING, NAMESPACE, OpenAIEmbeddings(), index_name="AN-testindex"
+)
+
+#vectorstore = Chroma(persist_directory="./chroma_db", embedding_function=OpenAIEmbeddings())
 
 template = """ 
 You are AskNarelle, a FAQ (Frequently Asked Questions) chatbot that is designed to answer course-related queries by undergraduate students.
-You are to use the provided pieces of context to answer any questions. 
+You are to use the provided piece(s) of context to answer any question. 
 If you do not know the answer, just reply with "Sorry, I'm not sure.", do not try to make up your own answer.
-You are also to required to keep the answers as concise as possible.
+You are also to required to keep the answers as concise as possible, but do not leave out any important details.
 
-{context}
-Question: {question}
-Helpful Answer:
+Context: {context}
+
+Chat History (May or may not be empty): {history}
 """
+system_message_prompt = SystemMessagePromptTemplate.from_template(template)
+human_template = "{text}"
+human_message_prompt = HumanMessagePromptTemplate.from_template(human_template)
 
-QA_CHAIN_PROMPT = PromptTemplate(input_variables=["context", "question"], template=template)
+chat_prompt = ChatPromptTemplate.from_messages(
+    [system_message_prompt, human_message_prompt]
+)
 
-llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
-qa = RetrievalQA.from_chain_type(llm,
-                                chain_type='stuff',
-                                retriever=vectorstore.as_retriever(),
-                                chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
-
+chat = ChatOpenAI(temperature=0)
 
 @app.route('/getAns', methods=['POST', 'OPTIONS'])
 def getAnswer():
@@ -50,11 +61,17 @@ def getAnswer():
         data = request.get_json()
         prompt = data.get("userInput","") # Default set the input to blank
         history = data.get("chatHistory", "") # Default set to blank
-        
-        updated_prompt = f"Chat history (May or may not be empty): {history}\n Prompt:{prompt}" 
 
-        result = qa.run(updated_prompt)
-        return{"Answer":result}
+        docs = vectorstore.similarity_search(prompt)
+        #print(docs[0].page_content)
+
+        reply = chat(
+            chat_prompt.format_prompt(
+                context=docs[0].page_content, history=history, text=prompt
+            ).to_messages()
+        )
+
+        return {"Answer":reply.content}
     except:
         return jsonify({"Status":"Failure --- Error with OpenAI API"})
 
