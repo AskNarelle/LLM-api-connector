@@ -1,6 +1,8 @@
 import os
 from dotenv import load_dotenv, find_dotenv
-from langchain.document_loaders import TextLoader
+from langchain.docstore.document import Document
+from langchain_community.document_loaders import PyPDFLoader, Docx2txtLoader
+from langchain_community.document_loaders.merge import MergedDataLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_openai import OpenAIEmbeddings
 from pymongo import MongoClient
@@ -15,31 +17,33 @@ CONNECTION_STRING = os.getenv("MONGO_URI")
 NAMESPACE = "testdb.testcollection"
 DB_NAME, COLLECTION_NAME = NAMESPACE.split(".")
 
-# def textEmbedder():
-#     # Document Loading 
-
-#     loader = TextLoader("./data/clean-sc1015.txt")
-#     data = loader.load()
-
-#     # Document Splitting
-#     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 0)
-#     all_splits = text_splitter.split_documents(data)
-
-#     # Storing into VectorDB (ChromaDB)
-#     persist_directory = "chroma_db"
-#     vectorstore = Chroma.from_documents(documents=all_splits,embedding=OpenAIEmbeddings(), persist_directory=persist_directory)
-
-#     vectorstore.persist()
-
 def CosmosEmbedder():
     global CONNECTION_STRING, NAMESPACE, DB_NAME, COLLECTION_NAME
 
-    loader = TextLoader("./data/clean-sc1015.txt")
-    data = loader.load()
+    all_docs = []
+
+    for filename in os.listdir("./data"):
+        file_path = os.path.join("./data", filename)
+
+        if os.path.isfile(file_path):
+            _, file_extension = os.path.splitext(file_path)
+
+            if file_extension.lower() == '.pdf':
+                pdf_parser = PyPDFLoader(file_path)
+                pdf_docs = pdf_parser.load()
+                all_docs.extend(pdf_docs)
+
+            elif file_extension.lower() == '.docx':
+                word_loader = Docx2txtLoader(file_path)
+                word_docs = word_loader.load()
+                all_docs.extend(word_docs)
+
+    # loader = TextLoader("./data/clean-sc1015.txt")
+    # data = loader.load()
 
     # Document Splitting
     text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 0)
-    all_splits = text_splitter.split_documents(data)
+    all_splits = text_splitter.split_documents(all_docs)
 
     client: MongoClient = MongoClient(CONNECTION_STRING)
     collection = client[DB_NAME][COLLECTION_NAME]
@@ -98,8 +102,8 @@ def fetchCosmos():
 
 if __name__ == "__main__":
     #textEmbedder()
-    #CosmosEmbedder()
-    checkCosmos()
+    CosmosEmbedder()
+    #checkCosmos()
     #deleteCosmos()
     #fetchCosmos()
 
