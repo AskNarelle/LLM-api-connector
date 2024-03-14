@@ -1,3 +1,7 @@
+# az webapp up --name NarallelBackendTest --resource-group AskNarelle-Sandbox --runtime PYTHON:3.11
+
+
+import os
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from dotenv import load_dotenv, find_dotenv
@@ -9,7 +13,8 @@ from langchain.prompts import PromptTemplate
 from langchain.chat_models import ChatOpenAI
 from langchain.chains import RetrievalQA
 
-load_dotenv(find_dotenv("./config/.env"))
+OPENAI_API_KEY = os.environ['OPENAI_API_KEY']
+#load_dotenv(find_dotenv("./config/.env"))
 
 app = Flask(__name__)
 CORS(app)
@@ -37,6 +42,11 @@ qa = RetrievalQA.from_chain_type(llm,
                                 chain_type_kwargs={"prompt": QA_CHAIN_PROMPT})
 
 
+
+@app.route('/')
+def home():
+    return "Hello World!"
+
 @app.route('/getAns', methods=['POST', 'OPTIONS'])
 def getAnswer():
     if request.method == 'OPTIONS':
@@ -52,8 +62,9 @@ def getAnswer():
         prompt = data.get("userInput","") # Default set the input to blank
         result = qa.run(prompt)
         return{"Answer":result}
-    except:
-        return jsonify({"Status":"Failure --- Error with OpenAI API"})
+    except Exception as e:
+        error_message = f"Failure --- Error with OpenAI API: {str(e)}"
+        return jsonify({"Status": error_message})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
