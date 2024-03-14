@@ -7,4 +7,4 @@ apt update
 apt install -y sqlite3
 
 #python3 app.py
-gunicorn --bind=0.0.0.0 --timeout 600 app:app
+uvicorn app:app --host 0.0.0.0 
