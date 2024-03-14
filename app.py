@@ -45,7 +45,7 @@ qa = RetrievalQA.from_chain_type(llm,
 
 @app.route('/')
 def home():
-    return "Hello World!"
+    return "Hello World! Testing CICD with Azure."
 
 @app.route('/getAns', methods=['POST', 'OPTIONS'])
 def getAnswer():
