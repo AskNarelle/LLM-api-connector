@@ -33,7 +33,7 @@ qa = RetrievalQA.from_chain_type(llm, chain_type='stuff', retriever=vectorstore.
 
 @app.get('/')
 async def home():
-    return "Hello World! Testing CICD with Azure."
+    return "Hello World! testing FastAPI."
 
 @app.post('/getAns')
 async def getAnswer(request: Request):
