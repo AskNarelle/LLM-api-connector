@@ -42,7 +42,7 @@ def CosmosEmbedder():
     # data = loader.load()
 
     # Document Splitting
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap = 0)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size = 512, chunk_overlap = 0)
     all_splits = text_splitter.split_documents(all_docs)
 
     client: MongoClient = MongoClient(CONNECTION_STRING)
