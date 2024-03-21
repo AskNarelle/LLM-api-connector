@@ -65,12 +65,17 @@ def getAnswer():
         if len(history) >= 4:
             history[:] = history[-4:]
 
-        docs = vectorstore.similarity_search(prompt)
+        docs = vectorstore.similarity_search(prompt, k=3)
 
         if docs == []:
             vector_result = "Not sure of the answer"
         else:
-            vector_result = docs[0].page_content
+            temp = []
+            for i in range(len(docs)):
+                temp.append([docs[i].page_content])
+            vector_result = str(temp)
+            # vector_result = docs[0].page_content
+            print(vector_result)
 
         reply = chat(
             chat_prompt.format_prompt(
